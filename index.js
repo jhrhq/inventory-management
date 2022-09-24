@@ -71,15 +71,16 @@ async function run() {
     app.put("/users/resetpassword/:email", async (req, res) => {
       // checking the mail is exists or not
       const email = req.params.email;
+      const newPassword = req.body;
       const query = { email };
       const user = await userCollection.findOne(query);
 
       if (user !== null) {
-        const newPassword = req.body;
         const oldPassword = user.password;
         const updatePassowrd = {
-          $set: { password: newPassword, oldPassword: [oldPassword] },
+          $set: { password: newPassword },
         };
+        const query = { _id: ObjectId(user._id) };
         const options = { upsert: true };
         const result = await userCollection.updateOne(
           query,
@@ -92,6 +93,7 @@ async function run() {
         res.send(result);
       } else {
         res.send("there is an account exist with this email");
+        res.send("testing");
       }
     });
   } finally {
