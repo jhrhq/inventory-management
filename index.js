@@ -51,7 +51,7 @@ async function run() {
     });
 
     // post/ create a new user accout
-    app.post("/users/:email", async (req, res) => {
+    app.post("/users-signin/:email", async (req, res) => {
       // checking the mail is exists or not
       const email = req.params.email;
       const query = { email };
@@ -68,32 +68,41 @@ async function run() {
     });
 
     // reset the password
-    app.put("/users/resetpassword/:email", async (req, res) => {
+    app.put("/users-resetpassword/:email", async (req, res) => {
       // checking the mail is exists or not
       const email = req.params.email;
-      const newPassword = req.body;
+      const newPassword = req.body.password;
       const query = { email };
       const user = await userCollection.findOne(query);
 
       if (user !== null) {
-        const oldPassword = user.password;
-        const updatePassowrd = {
-          $set: { password: newPassword },
-        };
-        const query = { _id: ObjectId(user._id) };
-        const options = { upsert: true };
-        const result = await userCollection.updateOne(
-          query,
-          updatePassowrd,
-          options
-        );
+        if (user.oldPassword === undefined) {
+          const updatePassowrd = {
+            $set: { password: newPassword },
+            $set: { oldPassword: [...user.password] },
+          };
+          const query = { _id: ObjectId(user._id) };
+          const options = { upsert: true };
+          const result = await userCollection.updateOne(
+            query,
+            updatePassowrd,
+            options
+          );
+          console.log(result);
+          res.send(result);
+        } else {
+          let result;
+          for (let i = 0; i <= user?.oldPassword.length; i++) {
+            if (newPassword === user.oldPassword[i]) {
+              user.oldPassword[i];
+              result = "this pwd exists";
+            }
+          }
 
-        console.log(result);
-
-        res.send(result);
+          res.send(result);
+        }
       } else {
-        res.send("there is an account exist with this email");
-        res.send("testing");
+        res.send("there is an account exist with this password");
       }
     });
   } finally {
