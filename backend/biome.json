@@ -37,7 +37,7 @@
     "formatter": {
       "arrowParentheses": "always",
       "bracketSpacing": true,
-      "quoteStyle": "single",
+      "quoteStyle": "double",
       "semicolons": "always",
       "trailingCommas": "all"
     },

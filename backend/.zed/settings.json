@@ -1,7 +1,15 @@
 {
   "tab_size": 2,
-
   "lsp": {
+    "vtsls": {
+      "initialization_options": {
+        "javascript": {
+          "preferences": {
+            "importModuleSpecifierEnding": "js",
+          },
+        },
+      },
+    },
     "biome": {
       "settings": {
         "require_config_file": true,
