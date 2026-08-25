@@ -1,0 +1,140 @@
+{
+  "$schema": "https://biomejs.dev/schemas/latest/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on",
+        "useSortedEnumMembers": "on",
+        "useSortedInterfaceMembers": "on",
+        "useSortedKeys": {
+          "level": "on",
+          "options": {
+            "sortOrder": "natural"
+          }
+        }
+      }
+    },
+    "enabled": true
+  },
+  "files": {
+    "includes": [
+      "**",
+      "!!**/dist",
+      "!!**/node_modules",
+      "!!*.env",
+      "!!*.css",
+      "!!package.json"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSpacing": true,
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    },
+    "globals": ["NodeJS"]
+  },
+  "json": {
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "trailingCommas": "none"
+    },
+    "linter": {
+      "enabled": true
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "a11y": "off",
+      "complexity": {
+        "noEmptyTypeParameters": "error",
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 15
+          }
+        },
+        "noImportantStyles": "off",
+        "noUselessCatch": "error",
+        "noUselessConstructor": "error",
+        "noUselessTypeConstraint": "error",
+        "noVoid": "error",
+        "useLiteralKeys": "error",
+        "useSimplifiedLogicExpression": "warn"
+      },
+      "correctness": {
+        "noGlobalDirnameFilename": "warn",
+        "noNodejsModules": "off",
+        "noUndeclaredVariables": "error",
+        "noUnsafeOptionalChaining": "error",
+        "noUnusedFunctionParameters": "warn",
+        "noUnusedImports": "error",
+        "noUnusedVariables": {
+          "fix": "none",
+          "level": "error"
+        },
+        "useImportExtensions": "off"
+      },
+      "nursery": {
+        "noEmptyObjectKeys": "error",
+        "noRestrictedDependencies": "off",
+        "noTopLevelLiterals": "warn",
+        "noUntrustedLicenses": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "error",
+        "noDelete": "warn",
+        "useTopLevelRegex": "warn"
+      },
+      "style": {
+        "noDefaultExport": "off",
+        "noParameterProperties": "error",
+        "useConst": "error",
+        "useEnumInitializers": "warn",
+        "useExportType": "error",
+        "useImportType": "error",
+        "useNodeAssertStrict": "error",
+        "useNodejsImportProtocol": "error",
+        "useTemplate": "error",
+        "useThrowNewError": "error",
+        "useThrowOnlyError": "error"
+      },
+      "suspicious": {
+        "noBiomeFirstException": "error",
+        "noConsole": {
+          "level": "off",
+          "options": {
+            "allow": ["info", "warn", "error"]
+          }
+        },
+        "noDoubleEquals": "error",
+        "noDuplicateDependencies": "error",
+        "noDuplicateObjectKeys": "error",
+        "noEvolvingTypes": "error",
+        "noExplicitAny": "warn",
+        "noFocusedTests": "error",
+        "noQuickfixBiome": "info",
+        "noSkippedTests": "warn",
+        "useAwait": "error",
+        "useBiomeIgnoreFolder": "warn"
+      }
+    }
+  },
+  "vcs": {
+    "clientKind": "git",
+    "enabled": true,
+    "useIgnoreFile": true
+  }
+}
