@@ -21,9 +21,11 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    fullName: {
+    fullname: {
       type: String,
       required: true,
+      minLength: [3, "Username must be at least three characters"],
+      maxLength: 20,
       unique: true,
       lowercase: true,
       trim: true,
@@ -39,7 +41,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
-    refreshToke: {
+    refreshToken: {
       type: String,
     },
     watchHistory: {
@@ -52,10 +54,10 @@ const userSchema = new Schema(
   },
 );
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified(this.password)) return next();
-  this.password = await bcrypt(this.password, 10);
-  next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
+
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
@@ -67,7 +69,7 @@ userSchema.methods.generateAccessToken = function () {
     {
       _id: this._id,
       username: this.username,
-      fullName: this.fullName,
+      fullname: this.fullname,
       email: this.email,
     },
     process.env.ACCESS_TOKEN_SECRET,
