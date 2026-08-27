@@ -23,7 +23,8 @@
       "!!**/node_modules",
       "!!*.env",
       "!!*.css",
-      "!!package.json"
+      "!!bin",
+      "!!public"
     ]
   },
   "formatter": {
@@ -80,12 +81,13 @@
         "noUndeclaredVariables": "error",
         "noUnsafeOptionalChaining": "error",
         "noUnusedFunctionParameters": "warn",
+        "noUndeclaredDependencies": "error",
         "noUnusedImports": "error",
         "noUnusedVariables": {
           "fix": "none",
           "level": "error"
         },
-        "useImportExtensions": "off"
+        "useImportExtensions": "error"
       },
       "nursery": {
         "noEmptyObjectKeys": "error",
