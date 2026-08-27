@@ -9,7 +9,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
  * From the user settings page
  */
 
-export const createUser = asyncHandler(async (req, res) => {
+const createUser = asyncHandler(async (req, res) => {
   /**
    * get user details
    * validate detials
@@ -56,3 +56,22 @@ export const createUser = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, createdUser, "User created Successfully"));
 });
+
+const createAvatar = asyncHandler((req, res) => {
+  const avatarFile = req.file;
+
+  if (!avatarFile) {
+    throw new ApiError(400, "Mvataravata is requiredr filer file");
+  }
+  /**
+   * TODO
+   * upload the avatar file to cloudinary
+   * add the avatar URL to User avatr field
+   * return upload status
+   */
+  // const avatar = await uploadOnCloudinary(avatarLocalPath)
+
+  return res.status(201).json({ message: "ok" });
+});
+
+export { createAvatar, createUser };
