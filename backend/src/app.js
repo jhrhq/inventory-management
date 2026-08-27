@@ -2,6 +2,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import morgan from "morgan";
+import { userRouter } from "./routes/user.routes.js";
 
 const app = express();
 
@@ -15,14 +16,13 @@ app.use(cookieParser());
 /*
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(import.meta.dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 */
+
+app.use("/user", userRouter);
 
 app.get("/", (_req, res) => {
   res.end("route is working");
