@@ -4,6 +4,7 @@ import {
   createUser,
   loginUser,
   logoutUser,
+  refreshAccessToken,
 } from "../controller/user.controller.js";
 import { verifyJwt } from "../middleware/auth.midlleware.js";
 import { upload } from "../middleware/multer.middleware.js";
@@ -18,5 +19,6 @@ userRouter.route("/").patch(upload.single("avatar"), createAvatar);
 userRouter.route("/login").post(loginUser);
 
 userRouter.route("/logout").post(verifyJwt, logoutUser);
+userRouter.route("/refresh-token").post(refreshAccessToken);
 
 export { userRouter };
