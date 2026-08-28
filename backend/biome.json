@@ -32,7 +32,8 @@
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf",
-    "lineWidth": 80
+    "lineWidth": 80,
+    "expand": "always"
   },
   "javascript": {
     "formatter": {
@@ -42,7 +43,9 @@
       "semicolons": "always",
       "trailingCommas": "all"
     },
-    "globals": ["NodeJS"]
+    "globals": [
+      "NodeJS"
+    ]
   },
   "json": {
     "formatter": {
@@ -118,7 +121,11 @@
         "noConsole": {
           "level": "off",
           "options": {
-            "allow": ["info", "warn", "error"]
+            "allow": [
+              "info",
+              "warn",
+              "error"
+            ]
           }
         },
         "noDoubleEquals": "error",

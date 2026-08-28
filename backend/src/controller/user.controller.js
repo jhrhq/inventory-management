@@ -30,7 +30,10 @@ export const generateAccessAndRefreshToken = async (userId) => {
       validateBeforeSave: false,
     });
 
-    return { accessToken, refreshToken };
+    return {
+      accessToken,
+      refreshToken,
+    };
   } catch (_error) {
     throw new ApiError(
       500,
@@ -52,15 +55,25 @@ const createUser = asyncHandler(async (req, res) => {
   const { username, email, fullname, password } = req.body;
 
   if (
-    [username, email, fullname, password].some(
-      (item) => !item || item.trim() === "",
-    )
+    [
+      username,
+      email,
+      fullname,
+      password,
+    ].some((item) => !item || item.trim() === "")
   ) {
     throw new ApiError(400, "Missing input fields");
   }
 
   const userExisted = await User.findOne({
-    $or: [{ email }, { username }],
+    $or: [
+      {
+        email,
+      },
+      {
+        username,
+      },
+    ],
   });
 
   if (userExisted) {
@@ -118,8 +131,14 @@ const createAvatar = asyncHandler((req, res) => {
       new: true,
     },
   ).select(" -password -refreshToken");
+
+  //TODO
+  // remove old cloudinary image
+
  */
-  return res.status(201).json({ message: "ok" });
+  return res.status(201).json({
+    message: "ok",
+  });
 });
 
 const loginUser = asyncHandler(async (req, res) => {
@@ -144,7 +163,17 @@ const loginUser = asyncHandler(async (req, res) => {
   }
 
   const user = await User.findOne({
-    $or: [{ username }, { email }, { password }],
+    $or: [
+      {
+        username,
+      },
+      {
+        email,
+      },
+      {
+        password,
+      },
+    ],
   });
 
   if (!user) {
@@ -181,7 +210,11 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: loggedInUser, accessToken, refreshToken },
+        {
+          user: loggedInUser,
+          accessToken,
+          refreshToken,
+        },
         "user logged in successfully",
       ),
     );
@@ -265,7 +298,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(
           200,
-          { accessToken, refreshToken },
+          {
+            accessToken,
+            refreshToken,
+          },
           "Access token refreshed successfully",
         ),
       );
@@ -303,7 +339,9 @@ const changeCurrentPassword = asyncHandler(async (req, res) => {
   }
 
   user.password = newPassword;
-  await user.save({ validateBeforeSave: false });
+  await user.save({
+    validateBeforeSave: false,
+  });
 
   return res
     .status(200)
@@ -333,9 +371,21 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
   const user = await User.findByIdAndUpdate(
     req.user._id,
     {
-      $set: [{ email }, { fullname }, { username }],
+      $set: [
+        {
+          email,
+        },
+        {
+          fullname,
+        },
+        {
+          username,
+        },
+      ],
     },
-    { new: true },
+    {
+      new: true,
+    },
   ).select("-password -refreshToken");
 
   return res
@@ -374,8 +424,13 @@ const updateCoverImage = asyncHandler((req, res) => {
       new: true,
     },
   ).select(" -password -refreshToken");
+
+  //TODO
+  // remove old cloudinary image
  */
-  return res.status(201).json({ message: "ok" });
+  return res.status(201).json({
+    message: "ok",
+  });
 });
 
 export {

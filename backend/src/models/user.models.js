@@ -10,7 +10,10 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      minLength: [3, "Username must be at least three characters"],
+      minLength: [
+        3,
+        "Username must be at least three characters",
+      ],
       maxLength: 20,
       index: true,
     },
@@ -24,7 +27,10 @@ const userSchema = new Schema(
     fullname: {
       type: String,
       required: true,
-      minLength: [3, "Username must be at least three characters"],
+      minLength: [
+        3,
+        "Username must be at least three characters",
+      ],
       maxLength: 20,
       unique: true,
       lowercase: true,
@@ -39,7 +45,10 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [
+        true,
+        "Password is required",
+      ],
     },
     refreshToken: {
       type: String,
@@ -73,7 +82,9 @@ userSchema.methods.generateAccessToken = function () {
       email: this.email,
     },
     process.env.ACCESS_TOKEN_SECRET,
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY },
+    {
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+    },
   );
 };
 
@@ -83,7 +94,9 @@ userSchema.methods.generateRefreshToken = function () {
       _id: this._id,
     },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: process.env.REFRESH_TOKEN_EXPIRY },
+    {
+      expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+    },
   );
 };
 
