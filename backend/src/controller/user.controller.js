@@ -256,4 +256,47 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { createAvatar, createUser, loginUser, logoutUser, refreshAccessToken };
+const changeCurrentPassword = asyncHandler(async (req, res) => {
+  /**
+   * get oldpassword, new password from req
+   * get full user using User model
+   * throw error on no user
+   * check old password is correct using user modles method
+   * throw error on incorrect passowrd
+   * add new password to the password field of DB
+   * save
+   * return response
+   */
+  const { oldPassword, newPassword } = req.body;
+
+  if (!oldPassword || !newPassword) {
+    throw ApiError(400, "oldPassword or newPassword not found");
+  }
+
+  const user = await User.findById(user._id);
+  if (!user) {
+    throw ApiError(400, "oldPassword or newPassword not found");
+  }
+
+  const isPasswordCorrect = user.isPasswordCorrect(oldPassword);
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid old password");
+  }
+
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, null, "Password changed successfully"));
+});
+
+export {
+  createAvatar,
+  createUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changeCurrentPassword,
+};
