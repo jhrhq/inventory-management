@@ -433,11 +433,103 @@ const updateCoverImage = asyncHandler((req, res) => {
   });
 });
 
+const getUserChannelProfile = asyncHandler(async (req, res) => {
+  /**
+   * get username from req.params
+   * trim and on not found throw console.error();
+   * aggregate pipeline
+   * -  match username
+   * - lookup from subscriptions, foreign field channel
+   * - lookup from subscriptions, foreign field subscriber
+   * - addfields {subscribersCount, subscribedChannels, isSubscribed => if elase condition }
+   *  - project {selected properties} that will be returned
+   * throw error not found data or data length,  {aggregation return array}
+   * return data
+   */
+
+  const { username } = req.params;
+
+  if (!username || username.trim() === "") {
+    throw new ApiError(400, "Username required");
+  }
+
+  const channel = await User.aggregate([
+    {
+      $match: "username",
+    },
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "channel",
+        as: "subscribers",
+      },
+    },
+    {
+      $lookup: {
+        from: "subscriptions",
+        localField: "_id",
+        foreignField: "subscriber",
+        as: "subscribedTo",
+      },
+    },
+
+    {
+      $addFields: {
+        subscribersCount: {
+          $size: "$subscribers",
+        },
+        channelsSubscribedToCount: {
+          $size: "$subscribedTo",
+        },
+        isSubscribed: {
+          $cond: {
+            if: {
+              $in: [
+                req.user?._id,
+                "$subscribers.subscriber",
+              ],
+            },
+            // biome-ignore  lint/suspicious/noThenProperty: false flag
+            then: true,
+            else: false,
+          },
+        },
+      },
+    },
+    {
+      $project: {
+        fullname: 1,
+        username: 1,
+        subscribersCount: 1,
+        channelsSubscribedToCount: 1,
+        isSubscribed: 1,
+        avatar: 1,
+        coverImage: 1,
+        email: 1,
+      },
+    },
+  ]);
+
+  // console.log(channel);
+
+  if (channel.length === 0) {
+    throw new ApiError(404, "channel does not exists");
+  }
+
+  return res
+    .status(400)
+    .json(
+      new ApiResponse(200, channel[0], "User channel fetched successfully!"),
+    );
+});
+
 export {
   changeCurrentPassword,
   createAvatar,
   createUser,
   getCurrentUser,
+  getUserChannelProfile,
   loginUser,
   logoutUser,
   refreshAccessToken,
